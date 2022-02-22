@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>Agent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.earcam.wrapped</groupId>
+            <artifactId>com.sun.tools.attach</artifactId>
+            <version>1.8.0_jdk8u172-b11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.22.0-GA</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <!-- get all project dependencies -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <!-- MainClass in mainfest make a executable jar -->
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+<!--                            <mainClass>priv.ga0weI.baseonagent.Attachthing</mainClass>-->
+                        </manifest>
+                        <manifestEntries>
+                            <Agent-Class>priv.ga0weI.baseonagent.Agentthing</Agent-Class>
+                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                            <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
+                        </manifestEntries>
+                    </archive>
+
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- bind to the packaging phase -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                <version>3.1.0</version>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--&lt;!&ndash;                                                        <addClasspath>true</addClasspath>&ndash;&gt;-->
+<!--                            <addClasspath>true</addClasspath>    //指定添加项目中使用的外部jar的classpath项-->
+<!--                                                        <classpathPrefix>tools.jar javassist-3.20.0-GA.jar</classpathPrefix> //指定外部jar所在的路径，添加的classpath为 【路径】/jar文件名，Maven自动解析文件名，使用本项目生成的jar包时，当前目录下有lib文件夹，lib文件夹中有本项目使用的外部jar文件即可-->
+<!--&lt;!&ndash;                                                        <classpathPrefix></classpathPrefix> //指定外部jar所在的路径，添加的classpath为 【路径】/jar文件名，Maven自动解析文件名，使用本项目生成的jar包时，当前目录下有lib文件夹，lib文件夹中有本项目使用的外部jar文件即可&ndash;&gt;-->
+<!--                                                        <mainClass> priv.ga0weI.baseonagent.Attachthing</mainClass>>-->
+<!--                        </manifest>-->
+<!--                        <manifestEntries>-->
+<!--                            <Agent-Class>priv.ga0weI.baseonagent.Agentthing</Agent-Class>-->
+<!--                            <Can-Redefine-Classes>true</Can-Redefine-Classes>-->
+<!--                            <Can-Retransform-Classes>true</Can-Retransform-Classes>-->
+<!--                            <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>-->
+<!--                        </manifestEntries>-->
+<!--                    </archive>-->
+
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--                    <plugin>  &lt;!&ndash;在打包阶段将依赖的jar包导出到lib目录下&ndash;&gt;-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>copy-dependencies</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>copy-dependencies</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <type>jar</type>-->
+<!--                                    <includeTypes>jar</includeTypes>-->
+<!--                                    <outputDirectory>lib</outputDirectory>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+
+<!--        </plugins>-->
+
+    </build>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+</project>
