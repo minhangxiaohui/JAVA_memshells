@@ -10,6 +10,9 @@ addHttpServlet.jsp
 addServlet.jsp
 
 addListerner.jsp
+
+### 使用
+上传至tomcat，访问即可触发
 ## 2、基于框架组件，Spring的Controller
 
 ## 3、基于javaagent技术运行时加载，instrumentation的redefinessClass和retransformClass来实现对类的重加载或重构
