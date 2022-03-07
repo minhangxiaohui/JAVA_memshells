@@ -1,12 +1,8 @@
 package priv.ga0weI.baseonagent;
 
-import com.sun.tools.attach.AgentInitializationException;
-import com.sun.tools.attach.AgentLoadException;
-import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -25,6 +21,11 @@ public class Attachthing {
         System.out.println("agent injected");
     }
 
+    /**
+     * look for pid in jvm
+     * @return Pid
+     * @throws Exception
+     */
     private static String getpid() throws Exception{
         Process ps = Runtime.getRuntime().exec("jps");
         InputStream is = ps.getInputStream();
