@@ -13,11 +13,15 @@ addListerner.jsp
 
 ### 使用
 上传至tomcat，访问即可触发
-## 2、基于框架组件，Spring的Controller
+## 2、基于框架组件
+
+springboot 框架中动态注册controller
 
 ## 3、基于javaagent技术运行时加载，instrumentation的redefinessClass和retransformClass来实现对类的重加载或重构
+
 inst.redefinessClass 
 inst.retransformClass
+
 ### 使用方法
 1、Tomcat的根目录中上传：Agent-1.0-SNAPSHOT-jar-with-dependencies.jar、Attach-1.0-SNAPSHOT-jar-with-dependencies.jar
 
